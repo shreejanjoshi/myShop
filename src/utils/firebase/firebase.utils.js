@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 // you need to actually get a document instance. But when you want to access the data on those documents, you need to use get dock. And when you want to set the data, you need to set dock.
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -78,4 +79,9 @@ export const createUserDocumentFromAuth = async (
 export const createAuthUserEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const signInAuthUserEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+  return await signInWithEmailAndPassword(auth, email, password);
 };
