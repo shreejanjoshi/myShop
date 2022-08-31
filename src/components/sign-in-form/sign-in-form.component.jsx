@@ -17,7 +17,7 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  console.log(formFields);
+  // console.log(formFields);
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -25,15 +25,13 @@ const SignInForm = () => {
 
   const signInWithGoogle = async () => {
     // I'm going to structure off the response because that's really all I want and I'm going to pass that in as the user off.
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await signInAuthUserEmailAndPassword(email, password);
-      console.log(response);
+      const { user } = await signInAuthUserEmailAndPassword(email, password);
       resetFormFields();
     } catch (error) {
       switch (error.code) {

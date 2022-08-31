@@ -7,6 +7,9 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
+  // And an observable listener is a way for us to hook into some kind of stream of events. Whether these events are seen at events or sign out events were actually able to trigger something based on these changes.
+  onAuthStateChanged,
 } from "firebase/auth";
 // you need to actually get a document instance. But when you want to access the data on those documents, you need to use get dock. And when you want to set the data, you need to set dock.
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -85,3 +88,9 @@ export const signInAuthUserEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   return await signInWithEmailAndPassword(auth, email, password);
 };
+
+export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) =>
+  // what on off state change does, as I mentioned, is that it will call this callback whenever the authentication state of our auth singleton changes. So when a user signs in, that's considered an off change because a user has authenticated when a user signs out, that's another change.
+  onAuthStateChanged(auth, callback);
