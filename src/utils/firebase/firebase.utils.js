@@ -12,7 +12,17 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 // you need to actually get a document instance. But when you want to access the data on those documents, you need to use get dock. And when you want to set the data, you need to set dock.
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  // We want to make sure that all of our objects that we're trying to add to the collection are successfully added. And to do that, we need to use a batch.
+  writeBatch,
+  query,
+  getDocs,
+} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // What this config does is it identifies this SDK, which is essentially a developer kit that we're using.
@@ -43,6 +53,38 @@ export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
+
+// to get json file to firebase
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    // And now what we're saying is, hey, set that location and set it with the value of the object itself.
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log("done");
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  return categoryMap;
+};
+
 // And what this method is, is it's an async function that receives some user authentication object because that's really what we're getting back anyways from our Firebase authentication, our Google assignment.
 export const createUserDocumentFromAuth = async (
   userAuth,

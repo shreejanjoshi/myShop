@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 import { UserProvider } from "./contexts/user.context";
-import { ProductsProvider } from "./contexts/products.context";
+import { CategoriesProvider } from "./contexts/categories.context"; 
 import { CartProvider } from "./contexts/cart.context";
 
 import "./index.scss";
@@ -18,11 +18,11 @@ root.render(
     <BrowserRouter>
       {/* So now any component inside of this user provider nested deep within the app can access the context value inside of the provider itself. So the user provider is solely meant to tell us, Oh, inside of my component tree which components have access to my context. It's going to be any components inside of the provider. Anything outside will not be able to access the context. */}
       <UserProvider>
-        <ProductsProvider>
+        <CategoriesProvider>
           <CartProvider>
             <App />
           </CartProvider>
-        </ProductsProvider>
+        </CategoriesProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>

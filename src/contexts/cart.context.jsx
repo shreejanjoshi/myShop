@@ -46,7 +46,7 @@ const clearCartItem = (cartItems, cartItemToClear) =>
 
 export const CartContext = createContext({
   isCartOpen: false,
-  setIsOpen: () => {},
+  setIsCartOpen: () => {},
   //   this have all things like prodt but add quantity extra
   cartItems: [],
   addItemToCart: () => {},
